@@ -50,13 +50,13 @@
       <dependency>
           <groupId>org.osgi</groupId>
           <artifactId>org.osgi.core</artifactId>
-          <version>4.3.0</version>
+          <version>4.3.1</version>
       </dependency>
       <dependency>
           <groupId>org.osgi</groupId>
           <artifactId>org.osgi.compendium</artifactId>
-          <version>4.2.0</version>
-      </dependency> 
+          <version>4.3.1</version>
+      </dependency>
   </dependencies>
   <repositories />
   <pluginRepositories />
@@ -72,9 +72,10 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.5.1</version>
         <configuration>
-          <target>jsr14</target>
-          <source>1.5</source>
+          <source>1.6</source>
+          <target>1.6</target>
         </configuration>
       </plugin>
       <plugin>
@@ -117,7 +118,7 @@
             <Bundle-Vendor>Karl Pauls</Bundle-Vendor>
             <Private-Package>org.osgi.framework.*, org.osgi.service.url, org.osgi.service.packageadmin, org.osgi.service.startlevel, org.osgi.util.tracker, de.kalpatec.pojosr.framework.*</Private-Package>
             <Import-Package>!*</Import-Package>
-            <Include-Resource>META-INF/LICENSE=LICENSE,META-INF/NOTICE=NOTICE,META-INF/DEPENDENCIES=DEPENDENCIES,{src/main/resources/}</Include-Resource> 
+            <Include-Resource>META-INF/LICENSE=LICENSE,META-INF/NOTICE=NOTICE,META-INF/DEPENDENCIES=DEPENDENCIES,{src/main/resources/}</Include-Resource>
             <Main-Class>de.kalpatec.pojosr.framework.PojoSR</Main-Class>
           </instructions>
         </configuration>
@@ -137,6 +138,6 @@
         <include>DEPENDENCIES*</include>
       </includes>
     </resource>
-    </resources> 
+    </resources>
   </build>
 </project>
