@@ -20,90 +20,88 @@ import java.util.Iterator;
 
 /**
  * A collection wrapper that only permits clients to shrink the collection.
-**/
-public class ShrinkableCollection<T> implements Collection<T>
-{
+ *
+ */
+public class ShrinkableCollection<T> implements Collection<T> {
+
     private final Collection<T> m_delegate;
 
-    public ShrinkableCollection(Collection<T> delegate)
-    {
+    public ShrinkableCollection(Collection<T> delegate) {
         m_delegate = delegate;
     }
 
-    public boolean add(T o)
-    {
+    @Override
+    public boolean add(T o) {
         throw new UnsupportedOperationException();
     }
 
-    public boolean addAll(Collection<? extends T> c)
-    {
+    @Override
+    public boolean addAll(Collection<? extends T> c) {
         throw new UnsupportedOperationException();
     }
 
-    public void clear()
-    {
+    @Override
+    public void clear() {
         m_delegate.clear();
     }
 
-    public boolean contains(Object o)
-    {
-        return m_delegate.contains(o);
-    }
-
-    public boolean containsAll(Collection<?> c)
-    {
-        return m_delegate.containsAll(c);
+    @Override
+    public boolean contains(Object o) {
+        return m_delegate.contains( o );
     }
 
     @Override
-    public boolean equals(Object o)
-    {
-        return m_delegate.equals(o);
+    public boolean containsAll(Collection<?> c) {
+        return m_delegate.containsAll( c );
     }
 
     @Override
-    public int hashCode()
-    {
+    public boolean equals(Object o) {
+        return m_delegate.equals( o );
+    }
+
+    @Override
+    public int hashCode() {
         return m_delegate.hashCode();
     }
 
-    public boolean isEmpty()
-    {
+    @Override
+    public boolean isEmpty() {
         return m_delegate.isEmpty();
     }
 
-    public Iterator iterator()
-    {
+    @Override
+    public Iterator iterator() {
         return m_delegate.iterator();
     }
 
-    public boolean remove(Object o)
-    {
-        return m_delegate.remove(o);
+    @Override
+    public boolean remove(Object o) {
+        return m_delegate.remove( o );
     }
 
-    public boolean removeAll(Collection<?> c)
-    {
-        return m_delegate.removeAll(c);
+    @Override
+    public boolean removeAll(Collection<?> c) {
+        return m_delegate.removeAll( c );
     }
 
-    public boolean retainAll(Collection<?> c)
-    {
-        return m_delegate.retainAll(c);
+    @Override
+    public boolean retainAll(Collection<?> c) {
+        return m_delegate.retainAll( c );
     }
 
-    public int size()
-    {
+    @Override
+    public int size() {
         return m_delegate.size();
     }
 
-    public Object[] toArray()
-    {
+    @Override
+    public Object[] toArray() {
         return m_delegate.toArray();
     }
 
-    public <A> A[] toArray(A[] a)
-    {
-        return m_delegate.toArray(a);
+    @Override
+    public <A> A[] toArray(A[] a) {
+        return m_delegate.toArray( a );
     }
 }

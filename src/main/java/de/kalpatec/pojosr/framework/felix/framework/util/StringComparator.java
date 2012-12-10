@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2011 Karl Pauls karlpauls@gmail.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,29 +17,24 @@ package de.kalpatec.pojosr.framework.felix.framework.util;
 
 import java.util.Comparator;
 
-public class StringComparator implements Comparator
-{
+public class StringComparator implements Comparator {
+
     private final boolean m_isCaseSensitive;
 
-    public StringComparator(boolean b)
-    {
+    public StringComparator(boolean b) {
         m_isCaseSensitive = b;
     }
 
-    public int compare(Object o1, Object o2)
-    {
-        if (m_isCaseSensitive)
-        {
-            return o1.toString().compareTo(o2.toString());
-        }
-        else
-        {
-            return o1.toString().compareToIgnoreCase(o2.toString());
+    @Override
+    public int compare(Object o1, Object o2) {
+        if ( m_isCaseSensitive ) {
+            return o1.toString().compareTo( o2.toString() );
+        } else {
+            return o1.toString().compareToIgnoreCase( o2.toString() );
         }
     }
 
-    public boolean isCaseSensitive()
-    {
+    public boolean isCaseSensitive() {
         return m_isCaseSensitive;
     }
 }

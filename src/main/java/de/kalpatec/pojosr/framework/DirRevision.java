@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2011 Karl Pauls karlpauls@gmail.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,52 +16,39 @@
 package de.kalpatec.pojosr.framework;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Enumeration;
-import java.util.Map;
 
-import de.kalpatec.pojosr.framework.felix.framework.util.StringMap;
+class DirRevision extends Revision {
 
-class DirRevision extends Revision
-{
     private final File m_file;
 
-    public DirRevision(File file)
-    {
+    public DirRevision(File file) {
         m_file = file;
     }
 
     @Override
-    public long getLastModified()
-    {
+    public long getLastModified() {
         return m_file.lastModified();
     }
 
-    public Enumeration getEntries()
-    {
-        return new FileEntriesEnumeration(m_file);
+    public Enumeration getEntries() {
+        return new FileEntriesEnumeration( m_file );
     }
 
     @Override
-    public URL getEntry(String entryName)
-    {
-        try
-        {
-		    if (entryName != null) {
-            File file = (new File(m_file, (entryName.startsWith("/")) ? entryName.substring(1) : entryName));
-            if (file.exists()) {
-                return file.toURL();
-            } 
-			}
-        }
-        catch (MalformedURLException e)
-        {
+    public URL getEntry(String entryName) {
+        try {
+            if ( entryName != null ) {
+                File file = ( new File( m_file, ( entryName.startsWith( "/" ) ) ? entryName.substring( 1 ) : entryName ) );
+                if ( file.exists() ) {
+                    return file.toURL();
+                }
+            }
+        } catch ( MalformedURLException e ) {
             e.printStackTrace();
         }
-            return null;
-
+        return null;
     }
-
 }

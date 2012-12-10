@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2011 Karl Pauls karlpauls@gmail.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,8 +17,8 @@ package de.kalpatec.pojosr.framework.felix.framework.capabilityset;
 
 import java.util.List;
 
-public interface Requirement
-{
+public interface Requirement {
+
     String getNamespace();
 
     SimpleFilter getFilter();

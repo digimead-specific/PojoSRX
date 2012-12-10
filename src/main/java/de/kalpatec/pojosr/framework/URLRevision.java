@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2011 Karl Pauls karlpauls@gmail.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,45 +20,36 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.Properties;
 
-class URLRevision extends Revision
-{
+class URLRevision extends Revision {
+
     private final URL m_url;
     private final long m_lastModified;
 
-    public URLRevision(URL url, long lastModified)
-    {
+    public URLRevision(URL url, long lastModified) {
         m_url = url;
-        if (lastModified > 0)
-        {
+        if ( lastModified > 0 ) {
             m_lastModified = lastModified;
-        }
-        else
-        {
+        } else {
             m_lastModified = System.currentTimeMillis();
         }
     }
 
     @Override
-    public long getLastModified()
-    {
+    public long getLastModified() {
         return m_lastModified;
     }
 
-    public Enumeration getEntries()
-    {
+    @Override
+    public Enumeration getEntries() {
         return new Properties().elements();
     }
 
     @Override
-    public URL getEntry(String entryName)
-    {
+    public URL getEntry(String entryName) {
         // TODO Auto-generated method stub
-        try
-        {
-            return new URL(m_url, entryName);
-        }
-        catch (MalformedURLException e)
-        {
+        try {
+            return new URL( m_url, entryName );
+        } catch ( MalformedURLException e ) {
             // TODO Auto-generated catch block
             e.printStackTrace();
             return null;

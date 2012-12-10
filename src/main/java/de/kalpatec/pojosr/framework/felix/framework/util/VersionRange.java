@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2011 Karl Pauls karlpauls@gmail.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,143 +17,117 @@ package de.kalpatec.pojosr.framework.felix.framework.util;
 
 import org.osgi.framework.Version;
 
-public class VersionRange
-{
+public class VersionRange {
+
     private final Version m_floor;
     private final boolean m_isFloorInclusive;
     private final Version m_ceiling;
     private final boolean m_isCeilingInclusive;
     public static final VersionRange infiniteRange = new VersionRange(
-            Version.emptyVersion, true, null, true);
+            Version.emptyVersion, true, null, true );
 
     public VersionRange(Version low, boolean isLowInclusive, Version high,
-            boolean isHighInclusive)
-    {
+            boolean isHighInclusive) {
         m_floor = low;
         m_isFloorInclusive = isLowInclusive;
         m_ceiling = high;
         m_isCeilingInclusive = isHighInclusive;
     }
 
-    public Version getFloor()
-    {
+    public Version getFloor() {
         return m_floor;
     }
 
-    public boolean isFloorInclusive()
-    {
+    public boolean isFloorInclusive() {
         return m_isFloorInclusive;
     }
 
-    public Version getCeiling()
-    {
+    public Version getCeiling() {
         return m_ceiling;
     }
 
-    public boolean isCeilingInclusive()
-    {
+    public boolean isCeilingInclusive() {
         return m_isCeilingInclusive;
     }
 
-    public boolean isInRange(Version version)
-    {
+    public boolean isInRange(Version version) {
         // We might not have an upper end to the range.
-        if (m_ceiling == null)
-        {
-            return (version.compareTo(m_floor) >= 0);
+        if ( m_ceiling == null ) {
+            return ( version.compareTo( m_floor ) >= 0 );
+        } else if ( isFloorInclusive() && isCeilingInclusive() ) {
+            return ( version.compareTo( m_floor ) >= 0 )
+                    && ( version.compareTo( m_ceiling ) <= 0 );
+        } else if ( isCeilingInclusive() ) {
+            return ( version.compareTo( m_floor ) > 0 )
+                    && ( version.compareTo( m_ceiling ) <= 0 );
+        } else if ( isFloorInclusive() ) {
+            return ( version.compareTo( m_floor ) >= 0 )
+                    && ( version.compareTo( m_ceiling ) < 0 );
         }
-        else if (isFloorInclusive() && isCeilingInclusive())
-        {
-            return (version.compareTo(m_floor) >= 0)
-                    && (version.compareTo(m_ceiling) <= 0);
-        }
-        else if (isCeilingInclusive())
-        {
-            return (version.compareTo(m_floor) > 0)
-                    && (version.compareTo(m_ceiling) <= 0);
-        }
-        else if (isFloorInclusive())
-        {
-            return (version.compareTo(m_floor) >= 0)
-                    && (version.compareTo(m_ceiling) < 0);
-        }
-        return (version.compareTo(m_floor) > 0)
-                && (version.compareTo(m_ceiling) < 0);
+        return ( version.compareTo( m_floor ) > 0 )
+                && ( version.compareTo( m_ceiling ) < 0 );
     }
 
-    public static VersionRange parse(String range)
-    {
+    public static VersionRange parse(String range) {
         // Check if the version is an interval.
-        if (range.indexOf(',') >= 0)
-        {
-            String s = range.substring(1, range.length() - 1);
-            String vlo = s.substring(0, s.indexOf(',')).trim();
-            String vhi = s.substring(s.indexOf(',') + 1, s.length()).trim();
-            return new VersionRange(new Version(vlo), (range.charAt(0) == '['),
-                    new Version(vhi), (range.charAt(range.length() - 1) == ']'));
-        }
-        else
-        {
-            return new VersionRange(new Version(range), true, null, false);
+        if ( range.indexOf( ',' ) >= 0 ) {
+            String s = range.substring( 1, range.length() - 1 );
+            String vlo = s.substring( 0, s.indexOf( ',' ) ).trim();
+            String vhi = s.substring( s.indexOf( ',' ) + 1, s.length() ).trim();
+            return new VersionRange( new Version( vlo ), ( range.charAt( 0 ) == '[' ),
+                    new Version( vhi ), ( range.charAt( range.length() - 1 ) == ']' ) );
+        } else {
+            return new VersionRange( new Version( range ), true, null, false );
         }
     }
 
-    public boolean equals(Object obj)
-    {
-        if (obj == null)
-        {
+    @Override
+    public boolean equals(Object obj) {
+        if ( obj == null ) {
             return false;
         }
-        if (getClass() != obj.getClass())
-        {
+        if ( getClass() != obj.getClass() ) {
             return false;
         }
         final VersionRange other = (VersionRange) obj;
-        if (m_floor != other.m_floor
-                && (m_floor == null || !m_floor.equals(other.m_floor)))
-        {
+        if ( m_floor != other.m_floor
+                && ( m_floor == null || !m_floor.equals( other.m_floor ) ) ) {
             return false;
         }
-        if (m_isFloorInclusive != other.m_isFloorInclusive)
-        {
+        if ( m_isFloorInclusive != other.m_isFloorInclusive ) {
             return false;
         }
-        if (m_ceiling != other.m_ceiling
-                && (m_ceiling == null || !m_ceiling.equals(other.m_ceiling)))
-        {
+        if ( m_ceiling != other.m_ceiling
+                && ( m_ceiling == null || !m_ceiling.equals( other.m_ceiling ) ) ) {
             return false;
         }
-        if (m_isCeilingInclusive != other.m_isCeilingInclusive)
-        {
+        if ( m_isCeilingInclusive != other.m_isCeilingInclusive ) {
             return false;
         }
         return true;
     }
 
-    public int hashCode()
-    {
+    @Override
+    public int hashCode() {
         int hash = 5;
-        hash = 97 * hash + (m_floor != null ? m_floor.hashCode() : 0);
-        hash = 97 * hash + (m_isFloorInclusive ? 1 : 0);
-        hash = 97 * hash + (m_ceiling != null ? m_ceiling.hashCode() : 0);
-        hash = 97 * hash + (m_isCeilingInclusive ? 1 : 0);
+        hash = 97 * hash + ( m_floor != null ? m_floor.hashCode() : 0 );
+        hash = 97 * hash + ( m_isFloorInclusive ? 1 : 0 );
+        hash = 97 * hash + ( m_ceiling != null ? m_ceiling.hashCode() : 0 );
+        hash = 97 * hash + ( m_isCeilingInclusive ? 1 : 0 );
         return hash;
     }
 
-    public String toString()
-    {
-        if (m_ceiling != null)
-        {
+    @Override
+    public String toString() {
+        if ( m_ceiling != null ) {
             StringBuffer sb = new StringBuffer();
-            sb.append(m_isFloorInclusive ? '[' : '(');
-            sb.append(m_floor.toString());
-            sb.append(',');
-            sb.append(m_ceiling.toString());
-            sb.append(m_isCeilingInclusive ? ']' : ')');
+            sb.append( m_isFloorInclusive ? '[' : '(' );
+            sb.append( m_floor.toString() );
+            sb.append( ',' );
+            sb.append( m_ceiling.toString() );
+            sb.append( m_isCeilingInclusive ? ']' : ')' );
             return sb.toString();
-        }
-        else
-        {
+        } else {
             return m_floor.toString();
         }
     }

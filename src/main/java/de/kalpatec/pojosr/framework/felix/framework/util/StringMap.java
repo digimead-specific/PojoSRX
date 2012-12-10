@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2011 Karl Pauls karlpauls@gmail.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,116 +15,112 @@
  */
 package de.kalpatec.pojosr.framework.felix.framework.util;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 /**
- * Simple utility class that creates a map for string-based keys. This map can
- * be set to use case-sensitive or case-insensitive comparison when searching
- * for the key. Any keys put into this map will be converted to a
- * <tt>String</tt> using the <tt>toString()</tt> method, since it is only
- * intended to compare strings.
- **/
-public class StringMap implements Map
-{
+ * Simple utility class that creates a map for string-based keys. This map can be set to use case-sensitive or case-insensitive comparison
+ * when searching for the key. Any keys put into this map will be converted to a <tt>String</tt> using the <tt>toString()</tt> method, since
+ * it is only intended to compare strings.
+ *
+ */
+public class StringMap implements Map {
+
     private TreeMap m_map;
 
-    public StringMap()
-    {
-        this(true);
+    public StringMap() {
+        this( true );
     }
 
-    public StringMap(boolean caseSensitive)
-    {
-        m_map = new TreeMap(new StringComparator(caseSensitive));
+    public StringMap(boolean caseSensitive) {
+        m_map = new TreeMap( new StringComparator( caseSensitive ) );
     }
 
-    public StringMap(Map map, boolean caseSensitive)
-    {
-        this(caseSensitive);
-        putAll(map);
+    public StringMap(Map map, boolean caseSensitive) {
+        this( caseSensitive );
+        putAll( map );
     }
 
-    public boolean isCaseSensitive()
-    {
-        return ((StringComparator) m_map.comparator()).isCaseSensitive();
+    public boolean isCaseSensitive() {
+        return ( (StringComparator) m_map.comparator() ).isCaseSensitive();
     }
 
-    public void setCaseSensitive(boolean b)
-    {
-        if (isCaseSensitive() != b)
-        {
-            TreeMap map = new TreeMap(new StringComparator(b));
-            map.putAll(m_map);
+    public void setCaseSensitive(boolean b) {
+        if ( isCaseSensitive() != b ) {
+            TreeMap map = new TreeMap( new StringComparator( b ) );
+            map.putAll( m_map );
             m_map = map;
         }
     }
 
-    public int size()
-    {
+    @Override
+    public int size() {
         return m_map.size();
     }
 
-    public boolean isEmpty()
-    {
+    @Override
+    public boolean isEmpty() {
         return m_map.isEmpty();
     }
 
-    public boolean containsKey(Object arg0)
-    {
-        return m_map.containsKey(arg0);
+    @Override
+    public boolean containsKey(Object arg0) {
+        return m_map.containsKey( arg0 );
     }
 
-    public boolean containsValue(Object arg0)
-    {
-        return m_map.containsValue(arg0);
+    @Override
+    public boolean containsValue(Object arg0) {
+        return m_map.containsValue( arg0 );
     }
 
-    public Object get(Object arg0)
-    {
-        return m_map.get(arg0);
+    @Override
+    public Object get(Object arg0) {
+        return m_map.get( arg0 );
     }
 
-    public Object put(Object key, Object value)
-    {
-        return m_map.put(key.toString(), value);
+    @Override
+    public Object put(Object key, Object value) {
+        return m_map.put( key.toString(), value );
     }
 
-    public void putAll(Map map)
-    {
-        for (Iterator it = map.entrySet().iterator(); it.hasNext();)
-        {
+    @Override
+    public void putAll(Map map) {
+        for ( Iterator it = map.entrySet().iterator(); it.hasNext(); ) {
             Map.Entry entry = (Map.Entry) it.next();
-            put(entry.getKey(), entry.getValue());
+            put( entry.getKey(), entry.getValue() );
         }
     }
 
-    public Object remove(Object arg0)
-    {
-        return m_map.remove(arg0);
+    @Override
+    public Object remove(Object arg0) {
+        return m_map.remove( arg0 );
     }
 
-    public void clear()
-    {
+    @Override
+    public void clear() {
         m_map.clear();
     }
 
-    public Set keySet()
-    {
+    @Override
+    public Set keySet() {
         return m_map.keySet();
     }
 
-    public Collection values()
-    {
+    @Override
+    public Collection values() {
         return m_map.values();
     }
 
-    public Set entrySet()
-    {
+    @Override
+    public Set entrySet() {
         return m_map.entrySet();
     }
 
-    public String toString()
-    {
+    @Override
+    public String toString() {
         return m_map.toString();
     }
 }

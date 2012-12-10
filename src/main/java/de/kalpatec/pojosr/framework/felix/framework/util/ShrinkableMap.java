@@ -20,72 +20,71 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-public class ShrinkableMap<K, V> implements Map<K, V>
-{
+public class ShrinkableMap<K, V> implements Map<K, V> {
+
     private final Map<K, V> m_delegate;
 
-    public ShrinkableMap(Map<K, V> delegate)
-    {
+    public ShrinkableMap(Map<K, V> delegate) {
         m_delegate = delegate;
     }
 
-    public int size()
-    {
+    @Override
+    public int size() {
         return m_delegate.size();
     }
 
-    public boolean isEmpty()
-    {
+    @Override
+    public boolean isEmpty() {
         return m_delegate.isEmpty();
     }
 
-    public boolean containsKey(Object o)
-    {
-        return m_delegate.containsKey(o);
+    @Override
+    public boolean containsKey(Object o) {
+        return m_delegate.containsKey( o );
     }
 
-    public boolean containsValue(Object o)
-    {
-        return m_delegate.containsValue(o);
+    @Override
+    public boolean containsValue(Object o) {
+        return m_delegate.containsValue( o );
     }
 
-    public V get(Object o)
-    {
-        return m_delegate.get(o);
+    @Override
+    public V get(Object o) {
+        return m_delegate.get( o );
     }
 
-    public V put(K k, V v)
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
+    @Override
+    public V put(K k, V v) {
+        throw new UnsupportedOperationException( "Not supported yet." );
     }
 
-    public V remove(Object o)
-    {
-        return m_delegate.remove(o);
+    @Override
+    public V remove(Object o) {
+        return m_delegate.remove( o );
     }
 
-    public void putAll(Map<? extends K, ? extends V> map)
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
+    @Override
+    public void putAll(Map<? extends K, ? extends V> map) {
+        throw new UnsupportedOperationException( "Not supported yet." );
     }
 
-    public void clear()
-    {
+    @Override
+    public void clear() {
         m_delegate.clear();
     }
 
-    public Set<K> keySet()
-    {
+    @Override
+    public Set<K> keySet() {
         return m_delegate.keySet();
     }
 
-    public Collection<V> values()
-    {
+    @Override
+    public Collection<V> values() {
         return m_delegate.values();
     }
 
-    public Set<Entry<K, V>> entrySet()
-    {
+    @Override
+    public Set<Entry<K, V>> entrySet() {
         return m_delegate.entrySet();
     }
 }

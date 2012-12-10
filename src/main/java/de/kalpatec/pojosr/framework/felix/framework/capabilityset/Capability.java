@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2011 Karl Pauls karlpauls@gmail.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,13 +17,12 @@ package de.kalpatec.pojosr.framework.felix.framework.capabilityset;
 
 import java.util.List;
 
-public interface Capability
-{
+public interface Capability {
+
     static final String MODULE_NAMESPACE = "module";
     static final String HOST_NAMESPACE = "host";
     static final String PACKAGE_NAMESPACE = "package";
     static final String SINGLETON_NAMESPACE = "singleton";
-
     public static final String PACKAGE_ATTR = "package";
     public static final String VERSION_ATTR = "version";
 

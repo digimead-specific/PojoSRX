@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2011 Karl Pauls karlpauls@gmail.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,48 +18,46 @@ package de.kalpatec.pojosr.framework;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 
-class EntriesEnumeration implements Enumeration
-{
+class EntriesEnumeration implements Enumeration {
+
     private final Enumeration m_enumeration;
-	private final String m_prefix;
-	private volatile Object current;
+    private final String m_prefix;
+    private volatile Object current;
 
-    public EntriesEnumeration(Enumeration enumeration)
-    {
-        this(enumeration, null);
+    public EntriesEnumeration(Enumeration enumeration) {
+        this( enumeration, null );
     }
-	
-	public EntriesEnumeration(Enumeration enumeration, String prefix)
-	{
-	   m_enumeration = enumeration;
-	   m_prefix = prefix;
-	}
 
+    public EntriesEnumeration(Enumeration enumeration, String prefix) {
+        m_enumeration = enumeration;
+        m_prefix = prefix;
+    }
+
+    @Override
     public boolean hasMoreElements() {
-				while ((current == null) && m_enumeration.hasMoreElements()) {
-					String result = (String) ((ZipEntry) m_enumeration.nextElement()).getName();
-					if (m_prefix != null){
-						if (result.startsWith(m_prefix)) {
-							current = result.substring(m_prefix.length());
-						}
-					}
-					else {
-						current = result;
-					}
-				}
-				return (current != null);
-			}
+        while ( ( current == null ) && m_enumeration.hasMoreElements() ) {
+            String result = (String) ( (ZipEntry) m_enumeration.nextElement() ).getName();
+            if ( m_prefix != null ) {
+                if ( result.startsWith( m_prefix ) ) {
+                    current = result.substring( m_prefix.length() );
+                }
+            } else {
+                current = result;
+            }
+        }
+        return ( current != null );
+    }
 
-			public Object nextElement() {
-				try {
-					if (hasMoreElements()) {
-						return current;
-					}
-					else {
-						return m_enumeration.nextElement();
-					}
-				} finally { 
-					current = null;
-				}
-			}
+    @Override
+    public Object nextElement() {
+        try {
+            if ( hasMoreElements() ) {
+                return current;
+            } else {
+                return m_enumeration.nextElement();
+            }
+        } finally {
+            current = null;
+        }
+    }
 }

@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2011 Karl Pauls karlpauls@gmail.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,8 +17,8 @@ package de.kalpatec.pojosr.framework.launch;
 
 import java.util.Map;
 
-public interface PojoServiceRegistryFactory 
-{
+public interface PojoServiceRegistryFactory {
+
     public static final String BUNDLE_DESCRIPTORS = PojoServiceRegistry.class
             .getName().toLowerCase() + ".bundles";
 

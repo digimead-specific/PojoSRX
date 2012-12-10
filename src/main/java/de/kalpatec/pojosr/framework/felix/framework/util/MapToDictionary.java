@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2011 Karl Pauls karlpauls@gmail.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,65 +15,67 @@
  */
 package de.kalpatec.pojosr.framework.felix.framework.util;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Dictionary;
+import java.util.Enumeration;
+import java.util.Map;
 
 /**
- * This is a simple class that implements a <tt>Dictionary</tt> from a
- * <tt>Map</tt>. The resulting dictionary is immutable.
- **/
-public class MapToDictionary extends Dictionary
-{
+ * This is a simple class that implements a <tt>Dictionary</tt> from a <tt>Map</tt>. The resulting dictionary is immutable.
+ *
+ */
+public class MapToDictionary extends Dictionary {
+
     /**
      * Map source.
-     **/
+     *
+     */
     private Map m_map = null;
 
-    public MapToDictionary(Map map)
-    {
-        if (map == null)
-        {
-            throw new IllegalArgumentException("Source map cannot be null.");
+    public MapToDictionary(Map map) {
+        if ( map == null ) {
+            throw new IllegalArgumentException( "Source map cannot be null." );
         }
         m_map = map;
     }
 
-    public Enumeration elements()
-    {
-        return Collections.enumeration(m_map.values());
+    @Override
+    public Enumeration elements() {
+        return Collections.enumeration( m_map.values() );
     }
 
-    public Object get(Object key)
-    {
-        return m_map.get(key);
+    @Override
+    public Object get(Object key) {
+        return m_map.get( key );
     }
 
-    public boolean isEmpty()
-    {
+    @Override
+    public boolean isEmpty() {
         return m_map.isEmpty();
     }
 
-    public Enumeration keys()
-    {
-        return Collections.enumeration(m_map.keySet());
+    @Override
+    public Enumeration keys() {
+        return Collections.enumeration( m_map.keySet() );
     }
 
-    public Object put(Object key, Object value)
-    {
+    @Override
+    public Object put(Object key, Object value) {
         throw new UnsupportedOperationException();
     }
 
-    public Object remove(Object key)
-    {
+    @Override
+    public Object remove(Object key) {
         throw new UnsupportedOperationException();
     }
 
-    public int size()
-    {
+    @Override
+    public int size() {
         return m_map.size();
     }
 
-    public String toString()
-    {
+    @Override
+    public String toString() {
         return m_map.toString();
     }
 }

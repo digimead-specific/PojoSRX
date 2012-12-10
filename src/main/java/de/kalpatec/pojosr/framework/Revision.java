@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2011 Karl Pauls karlpauls@gmail.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,10 +18,8 @@ package de.kalpatec.pojosr.framework;
 import java.net.URL;
 import java.util.Enumeration;
 
-import org.osgi.framework.wiring.BundleRevision;
+abstract class Revision {
 
-abstract class Revision
-{
     public abstract long getLastModified();
 
     public abstract URL getEntry(String entryName);
