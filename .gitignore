@@ -1,0 +1,11 @@
+*.class
+
+# Build directories #
+target/
+build/
+
+# Package files #
+*.jar
+*.war
+*.ear
+
