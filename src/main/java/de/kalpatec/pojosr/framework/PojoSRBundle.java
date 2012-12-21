@@ -60,16 +60,17 @@ class PojoSRBundle implements Bundle, BundleRevisions, BundleRevision {
     private final Map<String, String> m_manifest;
     private final Version m_version;
     private final String m_location;
-    private final Map<Long, Bundle> m_bundles;
-    private final ServiceRegistry m_reg;
     private final String m_activatorClass;
     private final long m_id;
     private final String m_symbolicName;
     private volatile BundleActivator m_activator = null;
     volatile int m_state = Bundle.RESOLVED;
-    volatile BundleContext m_context = null;
-    private final EventDispatcher m_dispatcher;
-    private final ClassLoader m_loader;
+
+    protected volatile BundleContext m_context = null;
+    protected final Map<Long, Bundle> m_bundles;
+    protected final ServiceRegistry   m_reg;
+    protected final EventDispatcher   m_dispatcher;
+    protected final ClassLoader       m_loader;
 
     Revision getRevision() {
         return m_revision;
