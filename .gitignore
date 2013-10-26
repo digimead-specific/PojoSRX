@@ -1,11 +1,19 @@
 *.class
 
 # Build directories #
-target/
+bin/
 build/
+project/target/
+project/project/target/
+project-dev/
+target/
 
 # Package files #
 *.jar
 *.war
 *.ear
 
+# Hidden and service files #
+*~
+.*
+_*

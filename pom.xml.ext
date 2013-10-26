@@ -31,7 +31,7 @@
     <artifactId>pojosrx</artifactId>
     <packaging>bundle</packaging>
 
-    <version>0.0.0-SNAPSHOT</version>
+    <version>0.2.2</version>
 
     <name>Pojo Service Registry eXtended</name>
     <description>A service registry that enables OSGi style service registry programs without using an OSGi framework.</description>
@@ -131,7 +131,7 @@
                         <Bundle-Name>Pojo Service Registry eXtended</Bundle-Name>
                         <Bundle-Vendor>Alexey Aksenov</Bundle-Vendor>
                         <!-- Declaring org.osgi.* packages here results in the corresponding classes to be included in the output artifact. -->
-                        <!-- <Private-Package>org.osgi.util.tracker, de.kalpatec.pojosr.framework.*</Private-Package> -->
+                        <Private-Package>org.osgi.util.tracker, de.kalpatec.pojosr.framework.*</Private-Package>
                         <Import-Package>!*</Import-Package>
                         <Main-Class>de.kalpatec.pojosr.framework.PojoSR</Main-Class>
                     </instructions>

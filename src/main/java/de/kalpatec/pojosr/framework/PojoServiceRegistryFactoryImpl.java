@@ -45,7 +45,10 @@ public class PojoServiceRegistryFactoryImpl implements
     @Override
     public PojoServiceRegistry newPojoServiceRegistry(Map configuration)
             throws Exception {
-        return new PojoSR( configuration );
+        final PojoSR sr = new PojoSR( configuration );
+        sr.prepare();
+        sr.start();
+        return sr;
     }
 
     @Override
