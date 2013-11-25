@@ -1,0 +1,12 @@
+---
+out: index.html
+---
+
+PojoSRX
+=======
+
+<hr/>
+
+> [Latest stable version $version$]($stable$)
+
+> [Latest development version $version$]($development$)

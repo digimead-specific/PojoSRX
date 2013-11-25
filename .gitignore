@@ -1,7 +1,10 @@
+!.gitignore
+
 *.class
 
 # Build directories #
 bin/
+boot/
 build/
 project/target/
 project/project/target/

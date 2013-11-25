@@ -1,0 +1,4 @@
+The 0.2.2 release includes the following:
+
+* Modified build configuration - bare by default.
+* Decomposed PojoSR - take out PojoSRPackageAdminService, PojoSRStartLevelService, PojoSRSystemBundle
