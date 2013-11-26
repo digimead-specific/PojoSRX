@@ -21,58 +21,55 @@ import org.osgi.framework.hooks.service.ListenerHook;
 
 public class ListenerHookInfoImpl implements ListenerHook.ListenerInfo {
 
-    private final BundleContext m_context;
-    private final ServiceListener m_listener;
-    private final String m_filter;
-    private boolean m_removed;
+	private final BundleContext m_context;
+	private final ServiceListener m_listener;
+	private final String m_filter;
+	private boolean m_removed;
 
-    public ListenerHookInfoImpl(BundleContext context,
-            ServiceListener listener, String filter, boolean removed) {
-        m_context = context;
-        m_listener = listener;
-        m_filter = filter;
-        m_removed = removed;
-    }
+	public ListenerHookInfoImpl(BundleContext context, ServiceListener listener, String filter, boolean removed) {
+		m_context = context;
+		m_listener = listener;
+		m_filter = filter;
+		m_removed = removed;
+	}
 
-    @Override
-    public BundleContext getBundleContext() {
-        return m_context;
-    }
+	@Override
+	public BundleContext getBundleContext() {
+		return m_context;
+	}
 
-    @Override
-    public String getFilter() {
-        return m_filter;
-    }
+	@Override
+	public String getFilter() {
+		return m_filter;
+	}
 
-    @Override
-    public boolean isRemoved() {
-        return m_removed;
-    }
+	@Override
+	public boolean isRemoved() {
+		return m_removed;
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if ( obj == this ) {
-            return true;
-        }
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		}
 
-        if ( !( obj instanceof ListenerHookInfoImpl ) ) {
-            return false;
-        }
+		if (!(obj instanceof ListenerHookInfoImpl)) {
+			return false;
+		}
 
-        ListenerHookInfoImpl other = (ListenerHookInfoImpl) obj;
-        return other.m_listener == m_listener
-                && ( m_filter == null ? other.m_filter == null : m_filter
-                .equals( other.m_filter ) );
-    }
+		ListenerHookInfoImpl other = (ListenerHookInfoImpl) obj;
+		return other.m_listener == m_listener && (m_filter == null ? other.m_filter == null : m_filter.equals(other.m_filter));
+	}
 
-    @Override
-    public int hashCode() {
-        int rc = 17;
+	@Override
+	public int hashCode() {
+		int rc = 17;
 
-        rc = 37 * rc + m_listener.hashCode();
-        if ( m_filter != null ) {
-            rc = 37 * rc + m_filter.hashCode();
-        }
-        return rc;
-    }
+		rc = 37 * rc + m_listener.hashCode();
+		if (m_filter != null) {
+			rc = 37 * rc + m_filter.hashCode();
+		}
+		return rc;
+	}
 }

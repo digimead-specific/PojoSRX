@@ -342,8 +342,7 @@ public class PojoSR implements PojoServiceRegistry {
 		m_context.registerService(StartLevel.class.getName(), new PojoSRStartLevelService(), null);
 
 		// TODO replace with package org.osgi.framework.wiring
-		m_context.registerService(PackageAdmin.class.getName(), new PojoSRPackageAdminService(m_dispatcher,
-				m_context, m_symbolicNameToBundle), null);
+		m_context.registerService(PackageAdmin.class.getName(), new PojoSRPackageAdminService(m_dispatcher, m_context, m_symbolicNameToBundle), null);
 	}
 
 	/**

@@ -33,9 +33,7 @@ import de.kalpatec.pojosr.framework.felix.framework.util.EventDispatcher;
  */
 public class PojoSRSystemBundle extends PojoSRBundle {
 
-	public PojoSRSystemBundle(Revision revision, Map<String, String> manifest, Version version, String location,
-			ServiceRegistry reg, EventDispatcher dispatcher, String activatorClass, long id,
-			String symbolicName, Map<Long, Bundle> bundles, ClassLoader loader) {
+	public PojoSRSystemBundle(Revision revision, Map<String, String> manifest, Version version, String location, ServiceRegistry reg, EventDispatcher dispatcher, String activatorClass, long id, String symbolicName, Map<Long, Bundle> bundles, ClassLoader loader) {
 		super(revision, manifest, version, location, reg, dispatcher, activatorClass, id, symbolicName, bundles, loader);
 	}
 

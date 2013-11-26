@@ -19,22 +19,22 @@ import java.util.Comparator;
 
 public class StringComparator implements Comparator {
 
-    private final boolean m_isCaseSensitive;
+	private final boolean m_isCaseSensitive;
 
-    public StringComparator(boolean b) {
-        m_isCaseSensitive = b;
-    }
+	public StringComparator(boolean b) {
+		m_isCaseSensitive = b;
+	}
 
-    @Override
-    public int compare(Object o1, Object o2) {
-        if ( m_isCaseSensitive ) {
-            return o1.toString().compareTo( o2.toString() );
-        } else {
-            return o1.toString().compareToIgnoreCase( o2.toString() );
-        }
-    }
+	@Override
+	public int compare(Object o1, Object o2) {
+		if (m_isCaseSensitive) {
+			return o1.toString().compareTo(o2.toString());
+		} else {
+			return o1.toString().compareToIgnoreCase(o2.toString());
+		}
+	}
 
-    public boolean isCaseSensitive() {
-        return m_isCaseSensitive;
-    }
+	public boolean isCaseSensitive() {
+		return m_isCaseSensitive;
+	}
 }

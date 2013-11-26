@@ -22,33 +22,33 @@ import java.util.Enumeration;
 
 class DirRevision extends Revision {
 
-    private final File m_file;
+	private final File m_file;
 
-    public DirRevision(File file) {
-        m_file = file;
-    }
+	public DirRevision(File file) {
+		m_file = file;
+	}
 
-    @Override
-    public long getLastModified() {
-        return m_file.lastModified();
-    }
+	@Override
+	public long getLastModified() {
+		return m_file.lastModified();
+	}
 
-    public Enumeration getEntries() {
-        return new FileEntriesEnumeration( m_file );
-    }
+	public Enumeration getEntries() {
+		return new FileEntriesEnumeration(m_file);
+	}
 
-    @Override
-    public URL getEntry(String entryName) {
-        try {
-            if ( entryName != null ) {
-                File file = ( new File( m_file, ( entryName.startsWith( "/" ) ) ? entryName.substring( 1 ) : entryName ) );
-                if ( file.exists() ) {
-                    return file.toURL();
-                }
-            }
-        } catch ( MalformedURLException e ) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+	@Override
+	public URL getEntry(String entryName) {
+		try {
+			if (entryName != null) {
+				File file = (new File(m_file, (entryName.startsWith("/")) ? entryName.substring(1) : entryName));
+				if (file.exists()) {
+					return file.toURL();
+				}
+			}
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

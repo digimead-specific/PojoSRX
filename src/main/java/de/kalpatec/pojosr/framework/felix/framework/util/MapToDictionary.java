@@ -21,61 +21,62 @@ import java.util.Enumeration;
 import java.util.Map;
 
 /**
- * This is a simple class that implements a <tt>Dictionary</tt> from a <tt>Map</tt>. The resulting dictionary is immutable.
+ * This is a simple class that implements a <tt>Dictionary</tt> from a
+ * <tt>Map</tt>. The resulting dictionary is immutable.
  *
  */
 public class MapToDictionary extends Dictionary {
 
-    /**
-     * Map source.
-     *
-     */
-    private Map m_map = null;
+	/**
+	 * Map source.
+	 *
+	 */
+	private Map m_map = null;
 
-    public MapToDictionary(Map map) {
-        if ( map == null ) {
-            throw new IllegalArgumentException( "Source map cannot be null." );
-        }
-        m_map = map;
-    }
+	public MapToDictionary(Map map) {
+		if (map == null) {
+			throw new IllegalArgumentException("Source map cannot be null.");
+		}
+		m_map = map;
+	}
 
-    @Override
-    public Enumeration elements() {
-        return Collections.enumeration( m_map.values() );
-    }
+	@Override
+	public Enumeration elements() {
+		return Collections.enumeration(m_map.values());
+	}
 
-    @Override
-    public Object get(Object key) {
-        return m_map.get( key );
-    }
+	@Override
+	public Object get(Object key) {
+		return m_map.get(key);
+	}
 
-    @Override
-    public boolean isEmpty() {
-        return m_map.isEmpty();
-    }
+	@Override
+	public boolean isEmpty() {
+		return m_map.isEmpty();
+	}
 
-    @Override
-    public Enumeration keys() {
-        return Collections.enumeration( m_map.keySet() );
-    }
+	@Override
+	public Enumeration keys() {
+		return Collections.enumeration(m_map.keySet());
+	}
 
-    @Override
-    public Object put(Object key, Object value) {
-        throw new UnsupportedOperationException();
-    }
+	@Override
+	public Object put(Object key, Object value) {
+		throw new UnsupportedOperationException();
+	}
 
-    @Override
-    public Object remove(Object key) {
-        throw new UnsupportedOperationException();
-    }
+	@Override
+	public Object remove(Object key) {
+		throw new UnsupportedOperationException();
+	}
 
-    @Override
-    public int size() {
-        return m_map.size();
-    }
+	@Override
+	public int size() {
+		return m_map.size();
+	}
 
-    @Override
-    public String toString() {
-        return m_map.toString();
-    }
+	@Override
+	public String toString() {
+		return m_map.toString();
+	}
 }

@@ -20,9 +20,9 @@ import java.util.Enumeration;
 
 abstract class Revision {
 
-    public abstract long getLastModified();
+	public abstract long getLastModified();
 
-    public abstract URL getEntry(String entryName);
+	public abstract URL getEntry(String entryName);
 
-    public abstract Enumeration<String> getEntries();
+	public abstract Enumeration<String> getEntries();
 }

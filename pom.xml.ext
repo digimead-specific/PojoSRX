@@ -31,7 +31,7 @@
     <artifactId>pojosrx</artifactId>
     <packaging>bundle</packaging>
 
-    <version>0.2.2</version>
+    <version>0.2.3-SNAPSHOT</version>
 
     <name>Pojo Service Registry eXtended</name>
     <description>A service registry that enables OSGi style service registry programs without using an OSGi framework.</description>

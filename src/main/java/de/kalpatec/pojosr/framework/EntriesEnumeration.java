@@ -20,44 +20,44 @@ import java.util.zip.ZipEntry;
 
 class EntriesEnumeration implements Enumeration {
 
-    private final Enumeration m_enumeration;
-    private final String m_prefix;
-    private volatile Object current;
+	private final Enumeration m_enumeration;
+	private final String m_prefix;
+	private volatile Object current;
 
-    public EntriesEnumeration(Enumeration enumeration) {
-        this( enumeration, null );
-    }
+	public EntriesEnumeration(Enumeration enumeration) {
+		this(enumeration, null);
+	}
 
-    public EntriesEnumeration(Enumeration enumeration, String prefix) {
-        m_enumeration = enumeration;
-        m_prefix = prefix;
-    }
+	public EntriesEnumeration(Enumeration enumeration, String prefix) {
+		m_enumeration = enumeration;
+		m_prefix = prefix;
+	}
 
-    @Override
-    public boolean hasMoreElements() {
-        while ( ( current == null ) && m_enumeration.hasMoreElements() ) {
-            String result = (String) ( (ZipEntry) m_enumeration.nextElement() ).getName();
-            if ( m_prefix != null ) {
-                if ( result.startsWith( m_prefix ) ) {
-                    current = result.substring( m_prefix.length() );
-                }
-            } else {
-                current = result;
-            }
-        }
-        return ( current != null );
-    }
+	@Override
+	public boolean hasMoreElements() {
+		while ((current == null) && m_enumeration.hasMoreElements()) {
+			String result = (String) ((ZipEntry) m_enumeration.nextElement()).getName();
+			if (m_prefix != null) {
+				if (result.startsWith(m_prefix)) {
+					current = result.substring(m_prefix.length());
+				}
+			} else {
+				current = result;
+			}
+		}
+		return (current != null);
+	}
 
-    @Override
-    public Object nextElement() {
-        try {
-            if ( hasMoreElements() ) {
-                return current;
-            } else {
-                return m_enumeration.nextElement();
-            }
-        } finally {
-            current = null;
-        }
-    }
+	@Override
+	public Object nextElement() {
+		try {
+			if (hasMoreElements()) {
+				return current;
+			} else {
+				return m_enumeration.nextElement();
+			}
+		} finally {
+			current = null;
+		}
+	}
 }

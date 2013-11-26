@@ -19,22 +19,22 @@ import java.util.List;
 
 public interface Capability {
 
-    static final String MODULE_NAMESPACE = "module";
-    static final String HOST_NAMESPACE = "host";
-    static final String PACKAGE_NAMESPACE = "package";
-    static final String SINGLETON_NAMESPACE = "singleton";
-    public static final String PACKAGE_ATTR = "package";
-    public static final String VERSION_ATTR = "version";
+	static final String MODULE_NAMESPACE = "module";
+	static final String HOST_NAMESPACE = "host";
+	static final String PACKAGE_NAMESPACE = "package";
+	static final String SINGLETON_NAMESPACE = "singleton";
+	public static final String PACKAGE_ATTR = "package";
+	public static final String VERSION_ATTR = "version";
 
-    String getNamespace();
+	String getNamespace();
 
-    Directive getDirective(String name);
+	Directive getDirective(String name);
 
-    List<Directive> getDirectives();
+	List<Directive> getDirectives();
 
-    Attribute getAttribute(String name);
+	Attribute getAttribute(String name);
 
-    List<Attribute> getAttributes();
+	List<Attribute> getAttributes();
 
-    List<String> getUses();
+	List<String> getUses();
 }

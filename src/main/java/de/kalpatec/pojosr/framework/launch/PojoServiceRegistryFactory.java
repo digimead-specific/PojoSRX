@@ -19,9 +19,7 @@ import java.util.Map;
 
 public interface PojoServiceRegistryFactory {
 
-    public static final String BUNDLE_DESCRIPTORS = PojoServiceRegistry.class
-            .getName().toLowerCase() + ".bundles";
+	public static final String BUNDLE_DESCRIPTORS = PojoServiceRegistry.class.getName().toLowerCase() + ".bundles";
 
-    public PojoServiceRegistry newPojoServiceRegistry(Map configuration)
-            throws Exception;
+	public PojoServiceRegistry newPojoServiceRegistry(Map configuration) throws Exception;
 }

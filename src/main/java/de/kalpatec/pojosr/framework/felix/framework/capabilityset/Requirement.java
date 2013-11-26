@@ -19,13 +19,13 @@ import java.util.List;
 
 public interface Requirement {
 
-    String getNamespace();
+	String getNamespace();
 
-    SimpleFilter getFilter();
+	SimpleFilter getFilter();
 
-    boolean isOptional();
+	boolean isOptional();
 
-    Directive getDirective(String name);
+	Directive getDirective(String name);
 
-    List<Directive> getDirectives();
+	List<Directive> getDirectives();
 }

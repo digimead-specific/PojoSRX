@@ -22,37 +22,37 @@ import java.util.Properties;
 
 class URLRevision extends Revision {
 
-    private final URL m_url;
-    private final long m_lastModified;
+	private final URL m_url;
+	private final long m_lastModified;
 
-    public URLRevision(URL url, long lastModified) {
-        m_url = url;
-        if ( lastModified > 0 ) {
-            m_lastModified = lastModified;
-        } else {
-            m_lastModified = System.currentTimeMillis();
-        }
-    }
+	public URLRevision(URL url, long lastModified) {
+		m_url = url;
+		if (lastModified > 0) {
+			m_lastModified = lastModified;
+		} else {
+			m_lastModified = System.currentTimeMillis();
+		}
+	}
 
-    @Override
-    public long getLastModified() {
-        return m_lastModified;
-    }
+	@Override
+	public long getLastModified() {
+		return m_lastModified;
+	}
 
-    @Override
-    public Enumeration getEntries() {
-        return new Properties().elements();
-    }
+	@Override
+	public Enumeration getEntries() {
+		return new Properties().elements();
+	}
 
-    @Override
-    public URL getEntry(String entryName) {
-        // TODO Auto-generated method stub
-        try {
-            return new URL( m_url, entryName );
-        } catch ( MalformedURLException e ) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            return null;
-        }
-    }
+	@Override
+	public URL getEntry(String entryName) {
+		// TODO Auto-generated method stub
+		try {
+			return new URL(m_url, entryName);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
 }
