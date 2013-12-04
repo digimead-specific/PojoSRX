@@ -119,6 +119,7 @@ public class PojoSR implements PojoServiceRegistry {
 		m_symbolicNameToBundle.put(sb.getSymbolicName(), sb);
 
 		m_config = config;
+		sb.start(); // create system bundle context
 		m_context = sb.getBundleContext();
 	}
 
@@ -332,8 +333,6 @@ public class PojoSR implements PojoServiceRegistry {
 	 * @throws Exception
 	 */
 	public void prepare() throws Exception {
-		m_context.getBundle().start();
-
 		// Register empty implementations of the StartLevel and PackageAdmin
 		// services
 		// needed by many third party bundles
