@@ -1,5 +1,6 @@
-/*
+/**
  * Copyright 2011 Karl Pauls karlpauls@gmail.com
+ * Copyright 2013 Alexey Aksenov ezh@ezh.msk.ru
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package de.kalpatec.pojosr.framework.launch;
 
 import java.util.Dictionary;
@@ -36,15 +38,15 @@ public interface PojoServiceRegistry {
 
 	public void removeServiceListener(ServiceListener listener);
 
-	public ServiceRegistration registerService(String[] clazzes, Object service, @SuppressWarnings("rawtypes") Dictionary properties);
+	public ServiceRegistration<?> registerService(String[] clazzes, Object service, @SuppressWarnings("rawtypes") Dictionary properties);
 
-	public ServiceRegistration registerService(String clazz, Object service, @SuppressWarnings("rawtypes") Dictionary properties);
+	public ServiceRegistration<?> registerService(String clazz, Object service, @SuppressWarnings("rawtypes") Dictionary properties);
 
-	public ServiceReference[] getServiceReferences(String clazz, String filter) throws InvalidSyntaxException;
+	public ServiceReference<?>[] getServiceReferences(String clazz, String filter) throws InvalidSyntaxException;
 
-	public ServiceReference getServiceReference(String clazz);
+	public ServiceReference<?> getServiceReference(String clazz);
 
-	public Object getService(ServiceReference reference);
+	public Object getService(ServiceReference<?> reference);
 
-	public boolean ungetService(ServiceReference reference);
+	public boolean ungetService(ServiceReference<?> reference);
 }

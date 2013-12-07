@@ -1,5 +1,6 @@
-/*
+/**
  * Copyright 2011 Karl Pauls karlpauls@gmail.com
+ * Copyright 2013 Alexey Aksenov ezh@ezh.msk.ru
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package de.kalpatec.pojosr.framework;
 
 import java.io.File;
@@ -177,7 +179,7 @@ class PojoSRBundle implements Bundle, BundleRevisions, BundleRevision {
 	}
 
 	@Override
-	public Dictionary getHeaders() {
+	public Dictionary<String, String> getHeaders() {
 		return getHeaders(Locale.getDefault().toString());
 	}
 
@@ -192,12 +194,12 @@ class PojoSRBundle implements Bundle, BundleRevisions, BundleRevision {
 	}
 
 	@Override
-	public ServiceReference[] getRegisteredServices() {
+	public ServiceReference< ? >[] getRegisteredServices() {
 		return m_reg.getRegisteredServices(this);
 	}
 
 	@Override
-	public ServiceReference[] getServicesInUse() {
+	public ServiceReference< ? >[] getServicesInUse() {
 		return m_reg.getServicesInUse(this);
 	}
 
@@ -215,12 +217,12 @@ class PojoSRBundle implements Bundle, BundleRevisions, BundleRevision {
 	}
 
 	@Override
-	public Dictionary getHeaders(String locale) {
+	public Dictionary<String, String> getHeaders(String locale) {
 		return new MapToDictionary(getCurrentLocalizedHeader(locale));
 	}
 
-	Map getCurrentLocalizedHeader(String locale) {
-		Map result = null;
+	Map<String, String> getCurrentLocalizedHeader(String locale) {
+		Map<String, String> result = null;
 
 		// Spec says empty local returns raw headers.
 		if ((locale == null) || (locale.length() == 0)) {
@@ -234,7 +236,7 @@ class PojoSRBundle implements Bundle, BundleRevisions, BundleRevision {
 				// only contain the localized headers for the default locale at
 				// the time of uninstall, so just return that.
 				if (getState() == Bundle.UNINSTALLED) {
-					result = (Map) m_cachedHeaders.values().iterator().next();
+					result = (Map<String, String>) m_cachedHeaders.values().iterator().next();
 				} // If the bundle has been updated, clear the cached headers.
 				else if (getLastModified() > m_cachedHeadersTimestamp) {
 					m_cachedHeaders.clear();
@@ -243,7 +245,7 @@ class PojoSRBundle implements Bundle, BundleRevisions, BundleRevision {
 					// Check if headers for this locale have already been
 					// resolved
 					if (m_cachedHeaders.containsKey(locale)) {
-						result = (Map) m_cachedHeaders.get(locale);
+						result = (Map<String, String>) m_cachedHeaders.get(locale);
 					}
 				}
 			}
@@ -252,13 +254,13 @@ class PojoSRBundle implements Bundle, BundleRevisions, BundleRevision {
 		// If the requested locale is not cached, then try to create it.
 		if (result == null) {
 			// Get a modifiable copy of the raw headers.
-			Map headers = new StringMap(m_manifest, false);
+			Map<String, String> headers = new StringMap(m_manifest, false);
 			// Assume for now that this will be the result.
 			result = headers;
 
 			// Check to see if we actually need to localize anything
 			boolean localize = false;
-			for (Iterator it = headers.values().iterator(); !localize && it.hasNext();) {
+			for (Iterator<String> it = headers.values().iterator(); !localize && it.hasNext();) {
 				if (((String) it.next()).startsWith("%")) {
 					localize = true;
 				}
@@ -283,7 +285,7 @@ class PojoSRBundle implements Bundle, BundleRevisions, BundleRevision {
 				// locale
 				boolean found = false;
 				Properties mergedProperties = new Properties();
-				for (Iterator it = resourceList.iterator(); it.hasNext();) {
+				for (Iterator<String> it = resourceList.iterator(); it.hasNext();) {
 					URL temp = m_revision.getEntry(it.next() + ".properties");
 					if (temp != null) {
 						found = true;

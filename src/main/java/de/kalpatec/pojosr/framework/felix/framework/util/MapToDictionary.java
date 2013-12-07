@@ -1,5 +1,6 @@
-/*
+/**
  * Copyright 2011 Karl Pauls karlpauls@gmail.com
+ * Copyright 2013 Alexey Aksenov ezh@ezh.msk.ru
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package de.kalpatec.pojosr.framework.felix.framework.util;
 
 import java.util.Collections;
@@ -25,15 +27,14 @@ import java.util.Map;
  * <tt>Map</tt>. The resulting dictionary is immutable.
  *
  */
-public class MapToDictionary extends Dictionary {
-
+public class MapToDictionary extends Dictionary<String, String> {
 	/**
 	 * Map source.
 	 *
 	 */
-	private Map m_map = null;
+	private Map<String, String> m_map = null;
 
-	public MapToDictionary(Map map) {
+	public MapToDictionary(Map<String, String> map) {
 		if (map == null) {
 			throw new IllegalArgumentException("Source map cannot be null.");
 		}
@@ -41,12 +42,12 @@ public class MapToDictionary extends Dictionary {
 	}
 
 	@Override
-	public Enumeration elements() {
+	public Enumeration<String> elements() {
 		return Collections.enumeration(m_map.values());
 	}
 
 	@Override
-	public Object get(Object key) {
+	public String get(Object key) {
 		return m_map.get(key);
 	}
 
@@ -56,17 +57,17 @@ public class MapToDictionary extends Dictionary {
 	}
 
 	@Override
-	public Enumeration keys() {
+	public Enumeration<String> keys() {
 		return Collections.enumeration(m_map.keySet());
 	}
 
 	@Override
-	public Object put(Object key, Object value) {
+	public String put(String key, String value) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public Object remove(Object key) {
+	public String remove(Object key) {
 		throw new UnsupportedOperationException();
 	}
 

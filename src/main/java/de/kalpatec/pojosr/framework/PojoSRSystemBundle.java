@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2011 Karl Pauls karlpauls@gmail.com
  * Copyright 2013 Alexey Aksenov ezh@ezh.msk.ru
  *

@@ -1,5 +1,6 @@
-/*
+/**
  * Copyright 2011 Karl Pauls karlpauls@gmail.com
+ * Copyright 2013 Alexey Aksenov ezh@ezh.msk.ru
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package de.kalpatec.pojosr.framework;
 
 import java.io.File;
@@ -58,23 +60,23 @@ import de.kalpatec.pojosr.framework.launch.PojoServiceRegistryFactory;
  */
 public class PojoSR implements PojoServiceRegistry {
 
-	protected final BundleContext m_context;
-	protected final Map m_config;
+	protected final BundleContext context;
+	protected final Map<String, Object> config;
 
 	/**
 	 * The {@link ServiceRegistry} responsible for keeping track of all
 	 * registered services.
 	 */
-	protected final ServiceRegistry m_reg = new ServiceRegistry(new ServiceRegistry.ServiceRegistryCallbacks() {
+	protected final ServiceRegistry reg = new ServiceRegistry(new ServiceRegistry.ServiceRegistryCallbacks() {
 		@Override
 		public void serviceChanged(ServiceEvent event, Dictionary oldProps) {
-			m_dispatcher.fireServiceEvent(event, oldProps, null);
+			dispatcher.fireServiceEvent(event, oldProps, null);
 		}
 	});
 
-	protected final EventDispatcher m_dispatcher = new EventDispatcher(m_reg);
+	protected final EventDispatcher dispatcher = new EventDispatcher(reg);
 	protected final Map<Long, Bundle> m_bundles = new HashMap<Long, Bundle>();
-	protected final Map<String, Bundle> m_symbolicNameToBundle = new HashMap<String, Bundle>();
+	protected final Map<String, Bundle> symbolicNameToBundle = new HashMap<String, Bundle>();
 
 	// ---- Constructors -------------------------------------------------------
 
@@ -85,7 +87,7 @@ public class PojoSR implements PojoServiceRegistry {
 	 *            the configuration parameters of the new Pojo Service Registry
 	 * @throws Exception
 	 */
-	public PojoSR(Map config) throws Exception {
+	public PojoSR(Map<String, Object> config) throws Exception {
 
 		final Map<String, String> headers = new HashMap<String, String>();
 		headers.put(Constants.BUNDLE_SYMBOLICNAME, "de.kalpatec.pojosr.framework");
@@ -110,21 +112,29 @@ public class PojoSR implements PojoServiceRegistry {
 				return getClass().getClassLoader().getResource(entryName);
 			}
 		}, headers, new Version(0, 0, 1), "file:pojosr", // location
-				m_reg, m_dispatcher, // event dispatcher
+				reg, dispatcher, // event dispatcher
 				null, // activator class
 				0, // id
 				"de.kalpatec.pojosr.framework", // symbolic name
 				m_bundles, getClass().getClassLoader());
 
-		m_symbolicNameToBundle.put(sb.getSymbolicName(), sb);
+		symbolicNameToBundle.put(sb.getSymbolicName(), sb);
 
-		m_config = config;
+		this.config = config;
 		sb.start(); // create system bundle context
-		m_context = sb.getBundleContext();
+		context = sb.getBundleContext();
 	}
 
 	// ---- Main method --------------------------------------------------------
 
+	/**
+	 * Get a configuration option.
+	 * @param key Configuration key.
+	 * @return Configuration option.
+	 */
+	public Object getConfigurationOption(String key) {
+		return config.get(key);
+	}
 	/**
 	 * Main method that can be used to automatically launch bundles placed on
 	 * the classpath. The following optional arguments can be provided on the
@@ -161,7 +171,7 @@ public class PojoSR implements PojoServiceRegistry {
 		}
 
 		// Find all bundles on the classpath, eventually filtering them
-		Map config = new HashMap();
+		Map<String, Object> config = new HashMap<String, Object>();
 		config.put(PojoServiceRegistryFactory.BUNDLE_DESCRIPTORS, (filter != null) ? new ClasspathScanner().scanForBundles(filter.toString()) : new ClasspathScanner().scanForBundles());
 
 		// Trigger the creation of an instance of this class that will manage
@@ -209,7 +219,7 @@ public class PojoSR implements PojoServiceRegistry {
 			if (u.toExternalForm().startsWith("file:")) {
 
 				File root = new File(URLDecoder.decode(desc.getUrl().getFile(), "UTF-8"));
-				u = root.toURL();
+				u = root.toURI().toURL();
 				rev = new DirRevision(root);
 
 			} else {
@@ -254,13 +264,13 @@ public class PojoSR implements PojoServiceRegistry {
 				sym = sym.trim();
 			}
 
-			if ((sym == null) || !m_symbolicNameToBundle.containsKey(sym)) {
+			if ((sym == null) || !symbolicNameToBundle.containsKey(sym)) {
 
 				// TODO: framework - support multiple versions
-				Bundle bundle = new PojoSRBundle(rev, bundleHeaders, osgiVersion, desc.getUrl().toExternalForm(), m_reg, m_dispatcher, bundleHeaders.get(Constants.BUNDLE_ACTIVATOR), m_bundles.size(), sym, m_bundles, desc.getClassLoader());
+				Bundle bundle = new PojoSRBundle(rev, bundleHeaders, osgiVersion, desc.getUrl().toExternalForm(), reg, dispatcher, bundleHeaders.get(Constants.BUNDLE_ACTIVATOR), m_bundles.size(), sym, m_bundles, desc.getClassLoader());
 
 				if (sym != null) {
-					m_symbolicNameToBundle.put(bundle.getSymbolicName(), bundle);
+					symbolicNameToBundle.put(bundle.getSymbolicName(), bundle);
 				}
 			}
 		}
@@ -269,7 +279,7 @@ public class PojoSR implements PojoServiceRegistry {
 			try {
 				m_bundles.get(i).start();
 			} catch (Throwable e) {
-				System.out.println("Unable to start bundle: " + i);
+				System.out.println("Unable to start bundle: " + i + "; " + m_bundles.get(i));
 				e.printStackTrace();
 			}
 		}
@@ -277,52 +287,52 @@ public class PojoSR implements PojoServiceRegistry {
 
 	@Override
 	public BundleContext getBundleContext() {
-		return m_context;
+		return context;
 	}
 
 	@Override
 	public void addServiceListener(ServiceListener listener, String filter) throws InvalidSyntaxException {
-		m_context.addServiceListener(listener, filter);
+		context.addServiceListener(listener, filter);
 	}
 
 	@Override
 	public void addServiceListener(ServiceListener listener) {
-		m_context.addServiceListener(listener);
+		context.addServiceListener(listener);
 	}
 
 	@Override
 	public void removeServiceListener(ServiceListener listener) {
-		m_context.removeServiceListener(listener);
+		context.removeServiceListener(listener);
 	}
 
 	@Override
-	public ServiceRegistration registerService(String[] clazzes, Object service, Dictionary properties) {
-		return m_context.registerService(clazzes, service, properties);
+	public ServiceRegistration<?> registerService(String[] clazzes, Object service, Dictionary properties) {
+		return context.registerService(clazzes, service, properties);
 	}
 
 	@Override
-	public ServiceRegistration registerService(String clazz, Object service, Dictionary properties) {
-		return m_context.registerService(clazz, service, properties);
+	public ServiceRegistration<?> registerService(String clazz, Object service, Dictionary properties) {
+		return context.registerService(clazz, service, properties);
 	}
 
 	@Override
-	public ServiceReference[] getServiceReferences(String clazz, String filter) throws InvalidSyntaxException {
-		return m_context.getServiceReferences(clazz, filter);
+	public ServiceReference<?>[] getServiceReferences(String clazz, String filter) throws InvalidSyntaxException {
+		return context.getServiceReferences(clazz, filter);
 	}
 
 	@Override
-	public ServiceReference getServiceReference(String clazz) {
-		return m_context.getServiceReference(clazz);
+	public ServiceReference<?> getServiceReference(String clazz) {
+		return context.getServiceReference(clazz);
 	}
 
 	@Override
-	public Object getService(ServiceReference reference) {
-		return m_context.getService(reference);
+	public Object getService(ServiceReference<?> reference) {
+		return context.getService(reference);
 	}
 
 	@Override
-	public boolean ungetService(ServiceReference reference) {
-		return m_context.ungetService(reference);
+	public boolean ungetService(ServiceReference<?> reference) {
+		return context.ungetService(reference);
 	}
 
 	// ---- PojoServiceRegistry initialization methods ------------------------
@@ -338,10 +348,10 @@ public class PojoSR implements PojoServiceRegistry {
 		// needed by many third party bundles
 
 		// TODO replace with package org.osgi.framework.startlevel
-		m_context.registerService(StartLevel.class.getName(), new PojoSRStartLevelService(), null);
+		context.registerService(StartLevel.class.getName(), new PojoSRStartLevelService(), null);
 
 		// TODO replace with package org.osgi.framework.wiring
-		m_context.registerService(PackageAdmin.class.getName(), new PojoSRPackageAdminService(m_dispatcher, m_context, m_symbolicNameToBundle), null);
+		context.registerService(PackageAdmin.class.getName(), new PojoSRPackageAdminService(dispatcher, context, symbolicNameToBundle), null);
 	}
 
 	/**
@@ -352,7 +362,7 @@ public class PojoSR implements PojoServiceRegistry {
 	public void start() throws Exception {
 		// Start all specified bundles
 
-		List<BundleDescriptor> bundles = (List<BundleDescriptor>) m_config.get(PojoServiceRegistryFactory.BUNDLE_DESCRIPTORS);
+		List<BundleDescriptor> bundles = (List<BundleDescriptor>) config.get(PojoServiceRegistryFactory.BUNDLE_DESCRIPTORS);
 
 		if (bundles != null) {
 			startBundles(bundles);
