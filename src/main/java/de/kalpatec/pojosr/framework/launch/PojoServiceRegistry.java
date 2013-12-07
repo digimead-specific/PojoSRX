@@ -18,8 +18,8 @@
 package de.kalpatec.pojosr.framework.launch;
 
 import java.util.Dictionary;
-import java.util.List;
 
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceListener;
@@ -30,7 +30,15 @@ public interface PojoServiceRegistry {
 
 	public BundleContext getBundleContext();
 
-	public void startBundles(List<BundleDescriptor> bundles) throws Exception;
+	/**
+	 * Load bundle with the specific descriptor.
+	 *
+	 * @param descriptor
+	 *            Bundle descriptor.
+	 * @return Loaded bundle.
+	 * @throws Exception
+	 */
+	public Bundle loadBundle(BundleDescriptor descriptor) throws Exception;
 
 	public void addServiceListener(ServiceListener listener, String filter) throws InvalidSyntaxException;
 

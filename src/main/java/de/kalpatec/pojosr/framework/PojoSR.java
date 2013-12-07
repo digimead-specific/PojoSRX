@@ -22,6 +22,7 @@ import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -31,11 +32,8 @@ import java.util.Properties;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.BundleEvent;
-import org.osgi.framework.BundleException;
 import org.osgi.framework.Constants;
 import org.osgi.framework.Filter;
-import org.osgi.framework.FrameworkEvent;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceEvent;
@@ -43,9 +41,7 @@ import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.framework.Version;
-import org.osgi.service.packageadmin.ExportedPackage;
 import org.osgi.service.packageadmin.PackageAdmin;
-import org.osgi.service.packageadmin.RequiredBundle;
 import org.osgi.service.startlevel.StartLevel;
 
 import de.kalpatec.pojosr.framework.felix.framework.ServiceRegistry;
@@ -127,14 +123,21 @@ public class PojoSR implements PojoServiceRegistry {
 
 	// ---- Main method --------------------------------------------------------
 
+	public List<BundleDescriptor> getBundleDescriptors() {
+		return (List<BundleDescriptor>) config.get(PojoServiceRegistryFactory.BUNDLE_DESCRIPTORS);
+	}
+
 	/**
 	 * Get a configuration option.
-	 * @param key Configuration key.
+	 *
+	 * @param key
+	 *            Configuration key.
 	 * @return Configuration option.
 	 */
 	public Object getConfigurationOption(String key) {
 		return config.get(key);
 	}
+
 	/**
 	 * Main method that can be used to automatically launch bundles placed on
 	 * the classpath. The following optional arguments can be provided on the
@@ -209,80 +212,61 @@ public class PojoSR implements PojoServiceRegistry {
 	// ---- PojoServiceRegistry methods ----------------------------------------
 
 	@Override
-	public void startBundles(List<BundleDescriptor> bundles) throws Exception {
+	public Bundle loadBundle(BundleDescriptor descriptor) throws Exception {
+		URL u = new URL(descriptor.getUrl().toExternalForm() + "META-INF/MANIFEST.MF");
+		Revision rev;
 
-		for (BundleDescriptor desc : bundles) {
+		if (u.toExternalForm().startsWith("file:")) {
+			File root = new File(URLDecoder.decode(descriptor.getUrl().getFile(), "UTF-8"));
+			u = root.toURI().toURL();
+			rev = new DirRevision(root);
+		} else {
+			URLConnection uc = u.openConnection();
+			if (uc instanceof JarURLConnection) {
+				final JarURLConnection juc = (JarURLConnection) uc;
 
-			URL u = new URL(desc.getUrl().toExternalForm() + "META-INF/MANIFEST.MF");
-			Revision rev;
+				String target = juc.getJarFileURL().toExternalForm();
+				String prefix = null;
 
-			if (u.toExternalForm().startsWith("file:")) {
+				if (!("jar:" + target + "!/").equals(descriptor.getUrl().toExternalForm())) {
+					prefix = descriptor.getUrl().toExternalForm().substring(("jar:" + target + "!/").length());
+				}
 
-				File root = new File(URLDecoder.decode(desc.getUrl().getFile(), "UTF-8"));
-				u = root.toURI().toURL();
-				rev = new DirRevision(root);
-
+				rev = new JarRevision(juc.getJarFile(), juc.getJarFileURL(), prefix, juc.getLastModified());
 			} else {
-
-				URLConnection uc = u.openConnection();
-
-				if (uc instanceof JarURLConnection) {
-
-					final JarURLConnection juc = (JarURLConnection) uc;
-
-					String target = juc.getJarFileURL().toExternalForm();
-					String prefix = null;
-
-					if (!("jar:" + target + "!/").equals(desc.getUrl().toExternalForm())) {
-						prefix = desc.getUrl().toExternalForm().substring(("jar:" + target + "!/").length());
-					}
-
-					rev = new JarRevision(juc.getJarFile(), juc.getJarFileURL(), prefix, juc.getLastModified());
-
-				} else {
-
-					rev = new URLRevision(desc.getUrl(), desc.getUrl().openConnection().getLastModified());
-				}
+				rev = new URLRevision(descriptor.getUrl(), descriptor.getUrl().openConnection().getLastModified());
 			}
+		}
 
-			Map<String, String> bundleHeaders = desc.getHeaders();
-			Version osgiVersion = null;
+		Map<String, String> bundleHeaders = descriptor.getHeaders();
+		Version osgiVersion = null;
 
-			try {
-				osgiVersion = Version.parseVersion(bundleHeaders.get(Constants.BUNDLE_VERSION));
-			} catch (Exception ex) {
-				ex.printStackTrace();
-				osgiVersion = Version.emptyVersion;
+		try {
+			osgiVersion = Version.parseVersion(bundleHeaders.get(Constants.BUNDLE_VERSION));
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			osgiVersion = Version.emptyVersion;
+		}
+
+		String sym = bundleHeaders.get(Constants.BUNDLE_SYMBOLICNAME);
+		if (sym != null) {
+			int idx = sym.indexOf(';');
+			if (idx > 0) {
+				sym = sym.substring(0, idx);
 			}
+			sym = sym.trim();
+		}
 
-			String sym = bundleHeaders.get(Constants.BUNDLE_SYMBOLICNAME);
+		if ((sym == null) || !symbolicNameToBundle.containsKey(sym)) {
+			// TODO: framework - support multiple versions
+			Bundle bundle = new PojoSRBundle(rev, bundleHeaders, osgiVersion, descriptor.getUrl().toExternalForm(), reg, dispatcher, bundleHeaders.get(Constants.BUNDLE_ACTIVATOR), m_bundles.size(), sym, m_bundles, descriptor.getClassLoader());
+
 			if (sym != null) {
-				int idx = sym.indexOf(';');
-				if (idx > 0) {
-					sym = sym.substring(0, idx);
-				}
-				sym = sym.trim();
+				symbolicNameToBundle.put(bundle.getSymbolicName(), bundle);
 			}
-
-			if ((sym == null) || !symbolicNameToBundle.containsKey(sym)) {
-
-				// TODO: framework - support multiple versions
-				Bundle bundle = new PojoSRBundle(rev, bundleHeaders, osgiVersion, desc.getUrl().toExternalForm(), reg, dispatcher, bundleHeaders.get(Constants.BUNDLE_ACTIVATOR), m_bundles.size(), sym, m_bundles, desc.getClassLoader());
-
-				if (sym != null) {
-					symbolicNameToBundle.put(bundle.getSymbolicName(), bundle);
-				}
-			}
+			return bundle;
 		}
-
-		for (long i = 1; i < m_bundles.size(); i++) {
-			try {
-				m_bundles.get(i).start();
-			} catch (Throwable e) {
-				System.out.println("Unable to start bundle: " + i + "; " + m_bundles.get(i));
-				e.printStackTrace();
-			}
-		}
+		return null;
 	}
 
 	@Override
@@ -362,10 +346,23 @@ public class PojoSR implements PojoServiceRegistry {
 	public void start() throws Exception {
 		// Start all specified bundles
 
-		List<BundleDescriptor> bundles = (List<BundleDescriptor>) config.get(PojoServiceRegistryFactory.BUNDLE_DESCRIPTORS);
+		List<BundleDescriptor> descriptors = getBundleDescriptors();
+		if (descriptors != null) {
+			List<Bundle> bundles = new ArrayList<Bundle>();
 
-		if (bundles != null) {
-			startBundles(bundles);
+			for (BundleDescriptor descriptor : descriptors) {
+				bundles.add(loadBundle(descriptor));
+			}
+			for (Bundle bundle : bundles) {
+				if (bundle != null) {
+					try {
+						bundle.start();
+					} catch (Throwable e) {
+						System.out.println("Unable to start bundle: " + bundle);
+						e.printStackTrace();
+					}
+				}
+			}
 		}
 	}
 }

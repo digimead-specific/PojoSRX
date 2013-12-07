@@ -1,5 +1,6 @@
-/*
+/**
  * Copyright 2011 Karl Pauls karlpauls@gmail.com
+ * Copyright 2013 Alexey Aksenov ezh@ezh.msk.ru
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package de.kalpatec.pojosr.framework.launch;
 
 import java.util.Map;
 
 public interface PojoServiceRegistryFactory {
-
 	public static final String BUNDLE_DESCRIPTORS = PojoServiceRegistry.class.getName().toLowerCase() + ".bundles";
 
-	public PojoServiceRegistry newPojoServiceRegistry(Map configuration) throws Exception;
+	public PojoServiceRegistry newPojoServiceRegistry(Map<String, Object> configuration) throws Exception;
 }

@@ -19,9 +19,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.osgi.framework.Bundle;
@@ -35,6 +37,7 @@ import org.osgi.framework.Version;
 import org.osgi.framework.launch.Framework;
 import org.osgi.framework.launch.FrameworkFactory;
 
+import de.kalpatec.pojosr.framework.launch.BundleDescriptor;
 import de.kalpatec.pojosr.framework.launch.ClasspathScanner;
 import de.kalpatec.pojosr.framework.launch.PojoServiceRegistry;
 import de.kalpatec.pojosr.framework.launch.PojoServiceRegistryFactory;
@@ -87,7 +90,24 @@ public class PojoServiceRegistryFactoryImpl implements PojoServiceRegistryFactor
 		@Override
 		public void start() throws BundleException {
 			try {
-				m_reg.startBundles((m_filter != null) ? new ClasspathScanner().scanForBundles(m_filter) : new ClasspathScanner().scanForBundles());
+				List<BundleDescriptor> descriptors = (m_filter != null) ? new ClasspathScanner().scanForBundles(m_filter) : new ClasspathScanner().scanForBundles();
+				if (descriptors != null) {
+					List<Bundle> bundles = new ArrayList<Bundle>();
+
+					for (BundleDescriptor descriptor : descriptors) {
+						bundles.add(m_reg.loadBundle(descriptor));
+					}
+					for (Bundle bundle : bundles) {
+						if (bundle != null) {
+							try {
+								bundle.start();
+							} catch (Throwable e) {
+								System.out.println("Unable to start bundle: " + bundle);
+								e.printStackTrace();
+							}
+						}
+					}
+				}
 			} catch (Exception e) {
 				throw new BundleException("Error starting framework", e);
 			}

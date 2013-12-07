@@ -127,7 +127,7 @@ class PojoSRBundle implements Bundle, BundleRevisions, BundleRevision {
 			m_state = Bundle.RESOLVED;
 			m_activator = null;
 			m_dispatcher.fireBundleEvent(new BundleEvent(BundleEvent.STOPPED, this));
-			throw new BundleException("Unable to start bundle", ex);
+			throw new BundleException("Unable to start bundle: " + this, ex);
 		}
 	}
 
@@ -152,7 +152,7 @@ class PojoSRBundle implements Bundle, BundleRevisions, BundleRevision {
 				m_activator.stop(m_context);
 			}
 		} catch (Throwable ex) {
-			throw new BundleException("Error while stopping bundle", ex);
+			throw new BundleException("Error while stopping bundle " + this, ex);
 		} finally {
 			m_reg.unregisterServices(this);
 			m_dispatcher.removeListeners(m_context);
