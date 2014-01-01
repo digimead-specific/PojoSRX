@@ -50,10 +50,9 @@ public class PojoSRSystemBundle extends PojoSRBundle {
 		m_dispatcher.fireBundleEvent(new BundleEvent(BundleEvent.STARTING, this));
 		m_context = new PojoSRBundleContext(this, m_reg, m_dispatcher, m_bundles);
 
-		int i = 0;
-		for (Bundle b : m_bundles.values()) {
-			i++;
+		for (long i = 0; i < m_bundles.size(); i++) {
 			try {
+				Bundle b = m_bundles.get(Long.valueOf(i));
 				if (b != this) {
 					b.start();
 				}
@@ -85,8 +84,9 @@ public class PojoSRSystemBundle extends PojoSRBundle {
 			@Override
 			public void run() {
 				m_dispatcher.fireBundleEvent(new BundleEvent(BundleEvent.STOPPING, systemBundle));
-				for (Bundle b : m_bundles.values()) {
+				for (long i = 0; i < m_bundles.size(); i++) {
 					try {
+						Bundle b = m_bundles.get(Long.valueOf(i));
 						if (b != systemBundle) {
 							b.stop();
 						}
