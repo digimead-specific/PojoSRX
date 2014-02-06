@@ -84,7 +84,7 @@ public class PojoSRSystemBundle extends PojoSRBundle {
 			@Override
 			public void run() {
 				m_dispatcher.fireBundleEvent(new BundleEvent(BundleEvent.STOPPING, systemBundle));
-				for (long i = 0; i < m_bundles.size(); i++) {
+				for (long i = m_bundles.size() - 1; i >= 0; i--) {
 					try {
 						Bundle b = m_bundles.get(Long.valueOf(i));
 						if (b != systemBundle) {
