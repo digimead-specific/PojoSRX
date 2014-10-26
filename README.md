@@ -9,6 +9,8 @@ This repository is mostly a mirror of the PojoSR project available on Google Cod
 
 [http://code.google.com/p/pojosr](http://code.google.com/p/pojosr/ "PojoSR")
 
+__Required Java 6 or higher__
+
 Copyright
 ---------
 
